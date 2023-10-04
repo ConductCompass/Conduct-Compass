@@ -20,7 +20,10 @@ class Student(db.Model):
     def get_json(self): 
         return{
             'studentID': studentID,
-            'name': name
-            'dob': dob
-            
+            'name': name,
+            'dob': dob,
+            'degree': degree,
+            'reviews_received': reviews_received, 
+            'score': score
+        }
             
