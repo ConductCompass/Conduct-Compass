@@ -8,3 +8,21 @@ class Review(db.Model):
     comments = db.Column (db.String(120), nullable = False)
     upvotes = db.Column (db.Integer)
     downvotes = db.Column (db.Integer)
+
+    def __init__(self, reviewID, studentID, staffID, comments, upvotes, downvotes): 
+        self.reviewID = reviewID
+        self.studentID = studentID
+        self.staffID = staffID
+        self.comments = comments
+        self.upvotes = upvotes
+        self.downvotes = downvotes 
+
+    def get_json(self): 
+        return{
+            'reviewID': reviewID,
+            'studentID': studentID,
+            'staffID': staffID, 
+            'comments': comments,
+            'upvotes': upvotes, 
+            'downvotes': downvotes
+        }
