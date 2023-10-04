@@ -5,3 +5,15 @@ class KarmaScore(db.Model):
     ID = db.Column(db.Integer, primary_key = True)
     studentID = db.Column(db.Integer, db.ForeignKey('student.studentID'))
     score = db.Column(db.Integer)
+
+    def __init__(self, ID, studentID, score):
+        self.ID = ID
+        self.studentID = studentID
+        self.score = score
+
+    def get_json(self): 
+        return{
+            'ID': ID,
+            'studentID': studentID, 
+            'score': score
+        }
