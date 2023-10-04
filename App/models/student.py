@@ -8,3 +8,19 @@ class Student(db.Model):
     degree = db.Column(db.String(120))
     reviews_received = db.Column(db.Integer)
     score = db.Column(db.Integer)
+
+    def __init__(self, studentID, name, dob, degree, reviews_received, score):
+        self.studentID = studentID
+        self.name = name
+        self.dob = dob
+        self.degree = degree
+        self.reviews_received = reviews_received
+        self.score = score
+
+    def get_json(self): 
+        return{
+            'studentID': studentID,
+            'name': name
+            'dob': dob
+            
+            
