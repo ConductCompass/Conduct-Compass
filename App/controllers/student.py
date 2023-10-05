@@ -12,7 +12,9 @@ def add_student(studentID, name, dob, degree, reviews_received, score):
 
 def search_student(studentID): 
     student = Student.query.filter_by(studentID=studentID).first()
-    return student.get_json()
+
+    if student:
+        return student.get_json()
 
 def get_all_students():
     return Student.query.all()
@@ -25,7 +27,13 @@ def get_all_students_json():
     return students
 
 
-#def update_student(studentID): 
+def update_student(studentID, score): 
+    student = Student.query.filter_by(studentID=studentID).first()
+    
+    if student:
+        student.score = score
+        db.session.add(student)
+        db.session.commit()
 
 #def get_student(studentID): 
 

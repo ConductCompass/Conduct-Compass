@@ -6,7 +6,7 @@ from datetime import datetime
 from App.database import db, get_migrate
 from App.main import create_app
 from App.controllers import ( create_user, get_all_users_json, get_all_users )
-from App.controllers.student import ( add_student, get_all_students_json, get_all_students, search_student )
+from App.controllers.student import ( add_student, get_all_students_json, get_all_students, search_student, update_student )
 
 # This commands file allow you to create convenient CLI commands for testing controllers
 
@@ -83,6 +83,13 @@ def list_student_command(format):
 @click.argument("id")
 def search_student_command(id):
     print(search_student(id))
+
+@student_cli.command("update", help="Update student in the database")
+@click.argument("id")
+@click.argument("score")
+def update_student_command(id, score):
+    update_student(id, score)
+    print(f'Student {id} updated!')
 
 app.cli.add_command(student_cli) # add the group to the cli
 
