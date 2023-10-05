@@ -21,7 +21,7 @@ def get_all_students_json():
     students = Student.query.all()
     if not students:
         return []
-    students = [student.to_json() for student in students]
+    students = [student.get_json() for student in students]
     return students
 
 
