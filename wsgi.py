@@ -1,10 +1,12 @@
 import click, pytest, sys
 from flask import Flask
 from flask.cli import with_appcontext, AppGroup
+from datetime import datetime
 
 from App.database import db, get_migrate
 from App.main import create_app
 from App.controllers import ( create_user, get_all_users_json, get_all_users )
+from App.controllers.student import ( add_student, get_all_students_json, get_all_students, search_student )
 
 # This commands file allow you to create convenient CLI commands for testing controllers
 
@@ -48,6 +50,42 @@ def list_user_command(format):
         print(get_all_users_json())
 
 app.cli.add_command(user_cli) # add the group to the cli
+
+
+''' 
+Student Commands
+'''
+student_cli = AppGroup('student', help='Student object commands') 
+
+# Then define the command and any parameters and annotate it with the group (@)
+@student_cli.command("add", help="Creates a student")
+@click.argument("id", default=1000)
+@click.argument("name", default="studentname")
+@click.argument("dob", default="2010-10-10T10:10:10")
+@click.argument("degree", default="IT")
+@click.argument("reviews_received", default=0)
+@click.argument("score", default=0)
+
+def add_student_command(id, name, dob, degree, reviews_received, score):
+    dob_datetime = datetime.fromisoformat(dob)
+    add_student(id, name, dob_datetime, degree, reviews_received, score)
+    print(f'{name} added!')
+
+@student_cli.command("list", help="Lists students in the database")
+@click.argument("format", default="string")
+def list_student_command(format):
+    if format == 'string':
+        print(get_all_students())
+    else:
+        print(get_all_students_json())
+
+@student_cli.command("search", help="Search student in the database")
+@click.argument("id")
+def search_student_command(id):
+    print(search_student(id))
+
+app.cli.add_command(student_cli) # add the group to the cli
+
 
 '''
 Test Commands
