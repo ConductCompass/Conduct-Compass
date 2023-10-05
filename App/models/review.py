@@ -19,10 +19,10 @@ class Review(db.Model):
 
     def get_json(self): 
         return{
-            'reviewID': reviewID,
-            'studentID': studentID,
-            'staffID': staffID, 
-            'comments': comments,
-            'upvotes': upvotes, 
-            'downvotes': downvotes
+            'reviewID': self.reviewID,
+            'studentID': self.studentID,
+            'staffID': self.staffID, 
+            'comments': self.comments,
+            'upvotes': self.upvotes, 
+            'downvotes': self.downvotes
         }
