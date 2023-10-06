@@ -4,8 +4,13 @@ from App.config import config
 from flask import request
 import json
 
-def get_downvotes(): 
-  return downvotes.get_json()
-  
+def downvote_review(downvoteID, reviewID, staffID): #staffID of staff member that made downvote on the review
+    downvote = Downvote(downvoteID=downvoteID, reviewID=reviewID, staffID=staffID)
+    db.session.add(downvote)
+    db.session.commit()
+    return downvote 
 
-#def downvote_review(): 
+def get_downvotes(): 
+  downvotes = Downvote.query.all()
+  return downvotes
+  

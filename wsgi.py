@@ -1,14 +1,17 @@
 import click, pytest, sys
 from flask import Flask
 from flask.cli import with_appcontext, AppGroup
+from App.models import Review, Staff
 from datetime import datetime
 
 from App.database import db, get_migrate
 from App.main import create_app
 from App.controllers import ( create_user, get_all_users_json, get_all_users )
+from App.controllers.user import (create_staff)
 from App.controllers.student import ( add_student, get_all_students_json, get_all_students, search_student, update_student )
-from App.controllers.review import (log_review, get_all_reviews, get_all_reviews_json, update_review_upvotes)
-from App.controllers.upvote import (upvote_review)
+from App.controllers.review import (log_review, get_all_reviews, get_all_reviews_json, update_review_upvotes, update_review_downvotes)
+from App.controllers.upvote import (upvote_review, get_upvotes)
+from App.controllers.downvote import (downvote_review, get_downvotes)
 
 # This commands file allow you to create convenient CLI commands for testing controllers
 
@@ -136,11 +139,51 @@ upvote_cli = AppGroup('upvote', help='Upvote object commands')
 @click.argument("staffid", default=5000)
 
 def upvote_review_command(upvoteid, reviewid, staffid):
-    upvote_review(upvoteid, reviewid, staffid)
-    update_review_upvotes(reviewid)
-    print(f'Review {reviewid} has been upvoted!')
+    review = Review.query.filter_by(reviewID=reviewid).first()
+    staff = Staff.query.filter_by(staffID=staffid).first()
+    if review and staff:
+        upvote_review(upvoteid, reviewid, staffid)
+        update_review_upvotes(reviewid)
+        print(f'Review {reviewid} has been upvoted!')
+    else:
+        print(f'Review {reviewid} could not be upvoted')
+
+@upvote_cli.command("list", help="Lists upvotes in the database")
+@click.argument("format", default="string")
+def get_upvotes_command(format):
+    if format == 'string':
+        print(get_upvotes())
 
 app.cli.add_command(upvote_cli)
+
+
+''' 
+Downvote Commands
+'''
+downvote_cli = AppGroup('downvote', help='Downvote object commands') 
+
+@downvote_cli.command("downvote_review", help="Downvote a review")
+@click.argument("downvoteid", default=4000)
+@click.argument("reviewid", default=2000)
+@click.argument("staffid", default=5000)
+
+def downvote_review_command(downvoteid, reviewid, staffid):
+    review = Review.query.filter_by(reviewID=reviewid).first()
+    staff = Staff.query.filter_by(staffID=staffid).first()
+    if review and staff:
+        downvote_review(downvoteid, reviewid, staffid)
+        update_review_downvotes(reviewid)
+        print(f'Review {reviewid} has been downvoted!')
+    else:
+        print(f'Review {reviewid} could not be downvoted')
+
+@downvote_cli.command("list", help="Lists downvotes in the database")
+@click.argument("format", default="string")
+def get_downvotes_command(format):
+    if format == 'string':
+        print(get_downvotes())
+
+app.cli.add_command(downvote_cli)
 
 
 '''

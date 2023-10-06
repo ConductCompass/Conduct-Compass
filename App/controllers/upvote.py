@@ -11,5 +11,7 @@ def upvote_review(upvoteID, reviewID, staffID): #staffID of staff member that ma
     db.session.commit()
     return upvote 
 
-#def get_upvotes(): 
+def get_upvotes(): 
+    upvotes = Upvote.query.all()
+    return upvotes
   

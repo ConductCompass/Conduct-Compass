@@ -1,5 +1,6 @@
-#import App.models from Staff 
-#import App.database from db 
-#import App.config from config 
+#from App.models import Staff 
+#from App.database import db 
+#from App.config import config 
 #import requests
 #import json
+

@@ -26,3 +26,10 @@ def update_review_upvotes(reviewID):
           review.upvotes = review.upvotes + 1
           db.session.add(review)
           db.session.commit()
+
+def update_review_downvotes(reviewID):
+     review = Review.query.filter_by(reviewID=reviewID).first()
+     if review:
+          review.downvotes = review.downvotes + 1
+          db.session.add(review)
+          db.session.commit()
