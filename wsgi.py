@@ -7,7 +7,8 @@ from App.database import db, get_migrate
 from App.main import create_app
 from App.controllers import ( create_user, get_all_users_json, get_all_users )
 from App.controllers.student import ( add_student, get_all_students_json, get_all_students, search_student, update_student )
-from App.controllers.review import (log_review)
+from App.controllers.review import (log_review, get_all_reviews, get_all_reviews_json, update_review_upvotes)
+from App.controllers.upvote import (upvote_review)
 
 # This commands file allow you to create convenient CLI commands for testing controllers
 
@@ -102,10 +103,10 @@ review_cli = AppGroup('review', help='Review object commands')
 
 # Then define the command and any parameters and annotate it with the group (@)
 @review_cli.command("log", help="Logs a review")
-@click.argument("id", default=2000)
+@click.argument("id", default=3000)
 @click.argument("studentid", default=1000)
 @click.argument("staffid", default=5000)
-@click.argument("comments", default="staff comment")
+@click.argument("comments", default="staffcomment")
 @click.argument("upvotes", default=0)
 @click.argument("downvotes", default=0)
 
@@ -113,7 +114,33 @@ def log_review_command(id, studentid, staffid, comments, upvotes, downvotes):
     log_review(id, studentid, staffid, comments, upvotes, downvotes)
     print(f'Review {id} has been logged!')
 
+@review_cli.command("list", help="Lists reviews in the database")
+@click.argument("format", default="string")
+def list_reviews_command(format):
+    if format == 'string':
+        print(get_all_reviews())
+    else:
+        print(get_all_reviews_json())
+
 app.cli.add_command(review_cli) # add the group to the cli
+
+
+''' 
+Upvote Commands
+'''
+upvote_cli = AppGroup('upvote', help='Upvote object commands') 
+
+@upvote_cli.command("upvote_review", help="Upvote a review")
+@click.argument("upvoteid", default=4000)
+@click.argument("reviewid", default=2000)
+@click.argument("staffid", default=5000)
+
+def upvote_review_command(upvoteid, reviewid, staffid):
+    upvote_review(upvoteid, reviewid, staffid)
+    update_review_upvotes(reviewid)
+    print(f'Review {reviewid} has been upvoted!')
+
+app.cli.add_command(upvote_cli)
 
 
 '''

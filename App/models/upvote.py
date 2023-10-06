@@ -7,7 +7,7 @@ class Upvote(db.Model):
     reviewID = db.Column(db.Integer, db.ForeignKey('review.reviewID'))
 
     def __init__(self, upvoteID, staffID, reviewID): 
-        self.upvote = upvote
+        self.upvoteID = upvoteID
         self.staffID = staffID
         self.reviewID = reviewID
 

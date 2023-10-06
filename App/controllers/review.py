@@ -10,6 +10,19 @@ def log_review(reviewID, studentID, staffID, comments, upvotes, downvotes):
      db.session.commit()
      return review 
 
-#def upvote_review(reviewID):
+def get_all_reviews():
+     return Review.query.all()
 
-#def downvote_review(reviewID):
+def get_all_reviews_json():
+     reviews = Review.query.all()
+     if not reviews:
+        return []
+     reviews = [review.get_json() for review in reviews]
+     return reviews
+
+def update_review_upvotes(reviewID):
+     review = Review.query.filter_by(reviewID=reviewID).first()
+     if review:
+          review.upvotes = review.upvotes + 1
+          db.session.add(review)
+          db.session.commit()
