@@ -43,6 +43,20 @@ def logout_action():
     user = login(data['username'], data['password'])
     return 'logged out!'
 
+@auth_views.route('/signup', methods = ['POST'])
+def signup_action():
+    data = request.form
+    username = data['username']
+    password = data['password']
+    user = create_user(username, password)
+    if user:
+        login_user(user)
+        return redirect('/')
+    else:
+        flash ('Username or email already in use!')
+        return redirect('/')
+    
+
 '''
 API Routes
 '''
