@@ -19,3 +19,33 @@ def create_student():
         flash ('Student Added')
     flash ('Error in adding student')
     return redirect ('/')
+
+@student_views.route('/searchStudent', methods = ['GET, ''POST'])
+def search_for_student():
+    data = request.form
+    studentID = data ['studentID']
+
+    student = search_student (username)
+    if student:
+        return render_template ('index.html', student = student)
+    else:
+        flash ('Student not Found')
+        return redirect ('/')
+
+@student_views.route('/listStudents', methods = ['GET'])
+def list_students():
+    students = get_all_students()
+
+    return render_template ('index.html', students = students)
+
+@student_views.route('/updateStudent', methods = ['GET', 'POST'])
+def update_score():
+    data = request.form
+    studentID = data ['studentID']
+    score = data ['score']
+    student = add_student(studentID, score)
+
+    if student:
+        flash ('Student updating')
+    flash ('Error in updating student')
+    return redirect ('/')
