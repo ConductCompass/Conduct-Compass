@@ -20,3 +20,30 @@ def add_review():
         return render_template('index.html')
     flash ('Error in adding review')
     return render_template ('index.html')
+
+@review_views.route('/reviewView', methods = ['GET'])
+def view_review():
+    reviews = get_all_reviews()
+
+    return render_template ('index.html', reviews = reviews)
+
+@review_views.route('/upReview', methods = ['POST'])
+def upvote_review():
+    data = request.form
+
+    review = data ['reviewID']
+    
+    update_review_upvotes (review)
+
+    return render_template ('index.html')
+
+
+@review_views.route('/downReview', methods = ['POST'])
+def downvote_review():
+    data = request.form
+
+    review = data ['reviewID']
+    
+    update_review_downvotes (review)
+
+    return render_template ('index.html')
