@@ -19,4 +19,4 @@ def upvote():
 def listUpvote():
     upvotes = get_upvotes()
 
-    return render_templaet ('index.html', upvotes = upvotes)
+    return render_template ('index.html', upvotes = upvotes)
