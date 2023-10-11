@@ -4,5 +4,5 @@ from .staff import *
 from .upvote import * 
 from .downvote import *
 from .karmascore import *
-from .students import *
+from .student import *
 from .review import *
