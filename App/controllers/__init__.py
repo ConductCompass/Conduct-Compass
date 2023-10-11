@@ -5,3 +5,4 @@ from .upvote import *
 from .downvote import *
 from .karmascore import *
 from .students import *
+from .review import *
