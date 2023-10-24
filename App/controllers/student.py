@@ -35,6 +35,15 @@ def update_student(studentID, score):
         db.session.add(student)
         db.session.commit()
 
+
+def update_reviews_received(studentID): 
+    student = Student.query.filter_by(studentID=studentID).first()
+    
+    if student:
+        student.reviews_received = student.reviews_received + 1
+        db.session.add(student)
+        db.session.commit()
+
 #def get_student(studentID): 
 
 

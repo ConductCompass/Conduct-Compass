@@ -1,4 +1,4 @@
-from App.models import User, Staff
+from App.models import User
 from App.database import db
 
 def create_user(username, password):
@@ -6,15 +6,6 @@ def create_user(username, password):
     db.session.add(newuser)
     db.session.commit()
     return newuser
-
-def create_staff(username, password):
-    newuser = Staff(username=username, password=password)
-    try:
-        db.session.add(newuser)
-        db.session.commit()
-        return newuser
-    except:
-        return None
 
 def get_user_by_username(username):
     return User.query.filter_by(username=username).first()

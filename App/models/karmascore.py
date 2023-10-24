@@ -13,7 +13,7 @@ class KarmaScore(db.Model):
 
     def get_json(self): 
         return{
-            'ID': ID,
-            'studentID': studentID, 
-            'score': score
+            'ID': self.ID,
+            'studentID': self.studentID, 
+            'score': self.score
         }

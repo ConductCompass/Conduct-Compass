@@ -6,8 +6,8 @@ from datetime import datetime
 
 from App.database import db, get_migrate
 from App.main import create_app
-from App.controllers import ( create_user, get_all_users_json, get_all_users )
-from App.controllers.user import (create_staff)
+from App.controllers.user import ( create_user, get_all_users_json, get_all_users )
+from App.controllers.staff import (create_staff, get_all_staff, get_all_staff_json)
 from App.controllers.student import ( add_student, get_all_students_json, get_all_students, search_student, update_student )
 from App.controllers.review import (log_review, get_all_reviews, get_all_reviews_json, update_review_upvotes, update_review_downvotes)
 from App.controllers.upvote import (upvote_review, get_upvotes)
@@ -24,6 +24,7 @@ def initialize():
     db.drop_all()
     db.create_all()
     create_user('bob', 'bobpass')
+    create_staff('bobb', 'bobbpass', 0)
     print('database intialized')
 
 '''
@@ -55,6 +56,33 @@ def list_user_command(format):
         print(get_all_users_json())
 
 app.cli.add_command(user_cli) # add the group to the cli
+
+
+'''Staff Commands  
+'''
+staff_cli = AppGroup('staff', help='Staff object commands') 
+
+# Then define the command and any parameters and annotate it with the group (@)
+@staff_cli.command("create", help="Creates staff member")
+@click.argument("username", default="robin")
+@click.argument("password", default="robpass")
+@click.argument("reviews_logged", default=0)
+def create_staff_command(username, password, reviews_logged):
+    create_staff(username, password, reviews_logged)
+    print(f'Staff {username} created!')
+
+# this command will be : flask user create bob bobpass
+
+@staff_cli.command("list", help="Lists staff in the database")
+@click.argument("format", default="string")
+def list_staff_command(format):
+    if format == 'string':
+        print(get_all_staff())
+    else:
+        print(get_all_staff_json())
+
+app.cli.add_command(staff_cli) # add the group to the cli
+
 
 
 ''' 
@@ -106,16 +134,16 @@ review_cli = AppGroup('review', help='Review object commands')
 
 # Then define the command and any parameters and annotate it with the group (@)
 @review_cli.command("log", help="Logs a review")
-@click.argument("id", default=3000)
+@click.argument("id", default=4000)
 @click.argument("studentid", default=1000)
-@click.argument("staffid", default=5000)
+@click.argument("staffid", default=2)
 @click.argument("comments", default="staffcomment")
 @click.argument("upvotes", default=0)
 @click.argument("downvotes", default=0)
 
 def log_review_command(id, studentid, staffid, comments, upvotes, downvotes):
-    log_review(id, studentid, staffid, comments, upvotes, downvotes)
-    print(f'Review {id} has been logged!')
+    if log_review(id, studentid, staffid, comments, upvotes, downvotes):
+        print(f'Review {id} has been logged!')
 
 @review_cli.command("list", help="Lists reviews in the database")
 @click.argument("format", default="string")

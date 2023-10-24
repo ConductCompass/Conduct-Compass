@@ -1,18 +1,23 @@
 from App.database import db
+from App.models import User
+from sqlalchemy import ForeignKey
 from werkzeug.security import generate_password_hash, check_password_hash
 
-class Staff(db.Model):
-    staffID = db.Column(db.Integer, primary_key = True)
-    reviews_logged = db.Column(db.String(120))
-    staffName = db.Column(db.String(120))
+class Staff(User):
+    staffID = db.Column(db.Integer, ForeignKey('user.id'), primary_key=True)
+    reviews_logged = db.Column(db.Integer)
 
-    def __init__(self, staffID, reviews_logged): 
-        self.staffID = staffID
+    __mapper_args__ = {
+        'inherit_condition': (staffID == User.id)
+    }
+
+    def __init__(self, username, password, reviews_logged):
+        super().__init__(username, password)
         self.reviews_logged = reviews_logged
-    
-    def get_json(self): 
-        return{
-            'staffID': staffID,
-            'staffName': staffName, 
-            'reviews_logged': reviews_logged
+
+    def get_json(self):
+        return {
+            'staffID': self.staffID,
+            'staffName': self.username,
+            'reviews_logged': self.reviews_logged
         }
