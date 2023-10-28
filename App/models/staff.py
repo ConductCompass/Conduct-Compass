@@ -11,9 +11,9 @@ class Staff(User):
         'inherit_condition': (staffID == User.id)
     }
 
-    def __init__(self, username, password, reviews_logged):
+    def __init__(self, username, password):
         super().__init__(username, password)
-        self.reviews_logged = reviews_logged
+        self.reviews_logged = 0
 
     def get_json(self):
         return {

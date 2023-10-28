@@ -13,4 +13,14 @@ def downvote_review(downvoteID, reviewID, staffID): #staffID of staff member tha
 def get_downvotes(): 
   downvotes = Downvote.query.all()
   return downvotes
+
+
+def get_downvotes_json(): 
+    downvotes = Downvote.query.all()
+    
+    if not downvotes:
+        return []
+    
+    downvotes = [downvote.get_json() for downvote in downvotes]
+    return downvotes
   

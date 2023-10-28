@@ -14,7 +14,7 @@ class Downvote(db.Model):
 
     def get_json(self): 
         return{
-            'downvoteID': downvoteID, 
-            'staffID': staffID, 
-            'reviewID': reviewID
+            'downvoteID': self.downvoteID, 
+            'staffID': self.staffID, 
+            'reviewID': self.reviewID
         }

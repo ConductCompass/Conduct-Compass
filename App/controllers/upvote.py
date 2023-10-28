@@ -14,4 +14,13 @@ def upvote_review(upvoteID, reviewID, staffID): #staffID of staff member that ma
 def get_upvotes(): 
     upvotes = Upvote.query.all()
     return upvotes
+
+def get_upvotes_json(): 
+    upvotes = Upvote.query.all()
+    
+    if not upvotes:
+        return []
+    
+    upvotes = [upvote.get_json() for upvote in upvotes]
+    return upvotes
   

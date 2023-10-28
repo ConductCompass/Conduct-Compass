@@ -4,8 +4,8 @@ from App.database import db
 from App.config import config 
 from flask import request, jsonify
 
-def create_staff(username, password, reviews_logged):
-    newuser = Staff(username=username, password=password, reviews_logged=reviews_logged)
+def create_staff(username, password):
+    newuser = Staff(username=username, password=password)
     try:
         db.session.add(newuser)
         db.session.commit()

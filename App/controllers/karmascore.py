@@ -7,7 +7,7 @@ import json
 
 def calculate_karma_score(studentID):
     score = 0
-    reviews = Review.query.All()
+    reviews = Review.query.all()
 
     for review in reviews:
         if review.studentID == studentID:

@@ -2,7 +2,6 @@ import click, pytest, sys
 from flask import Flask
 from flask.cli import with_appcontext, AppGroup
 from App.models import Review, Staff
-from datetime import datetime
 
 from App.database import db, get_migrate
 from App.main import create_app
@@ -24,7 +23,7 @@ def initialize():
     db.drop_all()
     db.create_all()
     create_user('bob', 'bobpass')
-    create_staff('bobb', 'bobbpass', 0)
+    create_staff('bobb', 'bobbpass')
     print('database intialized')
 
 '''
@@ -67,8 +66,8 @@ staff_cli = AppGroup('staff', help='Staff object commands')
 @click.argument("username", default="robin")
 @click.argument("password", default="robpass")
 @click.argument("reviews_logged", default=0)
-def create_staff_command(username, password, reviews_logged):
-    create_staff(username, password, reviews_logged)
+def create_staff_command(username, password):
+    create_staff(username, password)
     print(f'Staff {username} created!')
 
 # this command will be : flask user create bob bobpass
@@ -96,13 +95,11 @@ student_cli = AppGroup('student', help='Student object commands')
 @click.argument("name", default="studentname")
 @click.argument("dob", default="2010-10-10T10:10:10")
 @click.argument("degree", default="IT")
-@click.argument("reviews_received", default=0)
-@click.argument("score", default=0)
 
-def add_student_command(id, name, dob, degree, reviews_received, score):
-    dob_datetime = datetime.fromisoformat(dob)
-    add_student(id, name, dob_datetime, degree, reviews_received, score)
-    print(f'{name} added!')
+def add_student_command(id, name, dob, degree):
+    student = add_student(id, name, dob, degree)
+    if student:
+        print(f'Student {id} - {name} added!')
 
 @student_cli.command("list", help="Lists students in the database")
 @click.argument("format", default="string")

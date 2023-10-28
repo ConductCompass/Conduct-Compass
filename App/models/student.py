@@ -9,13 +9,13 @@ class Student(db.Model):
     reviews_received = db.Column(db.Integer)
     score = db.Column(db.Integer)
 
-    def __init__(self, studentID, name, dob, degree, reviews_received, score):
+    def __init__(self, studentID, name, dob, degree):
         self.studentID = studentID
         self.name = name
         self.dob = dob
         self.degree = degree
-        self.reviews_received = reviews_received
-        self.score = score
+        self.reviews_received = 0
+        self.score = 0
 
     def get_json(self): 
         return{
